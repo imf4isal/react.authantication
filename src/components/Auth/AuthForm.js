@@ -5,6 +5,8 @@ import classes from './AuthForm.module.css';
 const AuthForm = () => {
 
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const emailInputRef = useRef();
   const passInputRef = useRef();
@@ -20,6 +22,7 @@ const AuthForm = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passInputRef.current.value;
 
+    setIsLoading(true);
     if(isLogin){
 
     }else{
@@ -34,6 +37,7 @@ const AuthForm = () => {
           'Content-Type': 'application/json',
         },
       }).then(res => {
+        setIsLoading(false);
         if(res.ok){
 
         }else{
@@ -60,7 +64,10 @@ const AuthForm = () => {
           <input type='password' id='password' required ref={passInputRef} />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          {!isLoading && <button>{isLogin ? 'Login' : 'Create Account'}</button>}
+          {isLoading && <p>Sending request...</p>}
+
+         
           <button
             type='button'
             className={classes.toggle}
